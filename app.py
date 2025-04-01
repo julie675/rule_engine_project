@@ -38,3 +38,31 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # 创建所有数据表
     app.run(debug=True)
+
+from flask import Flask
+from flask_restful import Api
+from auth import LoginAPI
+from upload import FileUploadAPI
+from results import ResultAPI
+
+app = Flask(__name__)
+api = Api(app)
+
+# 配置上传文件夹
+app.config['UPLOAD_FOLDER'] = 'uploads'
+
+# 注册API路由
+api.add_resource(LoginAPI, '/api/login')
+api.add_resource(FileUploadAPI, '/api/upload')
+api.add_resource(ResultAPI, '/api/results')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+if __name__ == '__main__':
+    app.run(
+        host='0.0.0.0',  # 允许外部访问
+        port=5000,       # 端口号
+        debug=True,      # 调试模式（自动重载代码）
+        threaded=True    # 多线程处理请求
+    )
